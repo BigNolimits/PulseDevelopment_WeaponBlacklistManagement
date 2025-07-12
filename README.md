@@ -1,0 +1,2 @@
+# SecretEnemy_WeaponBlacklistManagement
+Simple Script
