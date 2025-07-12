@@ -8,6 +8,8 @@ This is a script that uses UI/UX to blacklist Weapons In A Server
    - add_principal identifier.discord: group.menuaccess
    - add_principal identifier.discord: group.bypass
    - (havent Tested The CFG Thing It Goes by the server.lua but do it anyway)
+   - Add install.sql To Your Database
+   - Restart Server
 
 # Future Projects
 - Ace Perms
