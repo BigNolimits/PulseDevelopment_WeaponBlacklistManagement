@@ -3,7 +3,7 @@ game 'gta5'
 
 lua54 'yes'
 
-author 'SecretEnemy'
+author 'Pulse Development'
 description 'Blacklist management for weapons'
 version '1.0.0'
 
