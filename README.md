@@ -1,4 +1,4 @@
-# SecretEnemy_WeaponBlacklistManagement
+# BigNolimits_WeaponBlacklistManagement
 This is a script that uses UI/UX to blacklist Weapons In A Server
 
 # How To Use
