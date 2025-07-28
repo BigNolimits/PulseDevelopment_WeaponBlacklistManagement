@@ -1,9 +1,6 @@
-function bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj(code)res=''for i in ipairs(code)do res=res..string.char(code[i]/105)end return res end 
-
-
 local function GetDiscordID(playerId)
     for _, id in ipairs(GetPlayerIdentifiers(playerId)) do
-        if string.find(id, bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({10500,11025,12075,10395,11655,11970,10500,6090})) then
+        if string.find(id, "discord:") then
             return id
         end
     end
@@ -11,49 +8,49 @@ local function GetDiscordID(playerId)
 end
 
 -- Check permission to access menu
-RegisterNetEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10395,10920,10605,10395,11235,8400,10605,11970,11445}), function()
+RegisterNetEvent('weaponblacklist:checkPerm', function()
     local src = source
     local discordId = GetDiscordID(src)
     local allowed = discordId and allowedMenuAccess[discordId] or false
-    TriggerClientEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10395,10920,10605,10395,11235,8400,10605,11970,11445,8610,10605,12075,11760,11655,11550,12075,10605}), src, allowed)
+    TriggerClientEvent('weaponblacklist:checkPermResponse', src, allowed)
 end)
 
 -- Check bypass permission
-RegisterNetEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10395,10920,10605,10395,11235,6930,12705,11760,10185,12075,12075}), function()
+RegisterNetEvent('weaponblacklist:checkBypass', function()
     local src = source
     local discordId = GetDiscordID(src)
     local allowed = discordId and allowedBypass[discordId] or false
-    TriggerClientEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10395,10920,10605,10395,11235,6930,12705,11760,10185,12075,12075,8610,10605,12075,11760,11655,11550,12075,10605}), src, allowed)
+    TriggerClientEvent('weaponblacklist:checkBypassResponse', src, allowed)
 end)
 
 -- Get current blacklist from DB and send to client
-RegisterNetEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10815,10605,12180,6930,11340,10185,10395,11235,11340,11025,12075,12180}), function()
+RegisterNetEvent('weaponblacklist:getBlacklist', function()
     local src = source
-    local result = MySQL.query.await(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({8715,7245,7980,7245,7035,8820,3360,12495,10605,10185,11760,11655,11550,9975,11550,10185,11445,10605,3360,7350,8610,8295,8085,3360,12495,10605,10185,11760,11655,11550,9975,10290,11340,10185,10395,11235,11340,11025,12075,12180}))
+    local result = MySQL.query.await('SELECT weapon_name FROM weapon_blacklist')
     local list = {}
 
     for _, row in ipairs(result) do
         table.insert(list, row.weapon_name)
     end
 
-    TriggerClientEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,12075,10605,11550,10500,6930,11340,10185,10395,11235,11340,11025,12075,12180}), src, list)
+    TriggerClientEvent('weaponblacklist:sendBlacklist', src, list)
 end)
 
 -- Add a weapon to the blacklist table
-RegisterNetEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,10185,10500,10500,9135,10605,10185,11760,11655,11550}), function(weapon)
-    MySQL.prepare(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({7665,8190,8715,7245,8610,8820,3360,7665,7455,8190,8295,8610,7245,3360,7665,8190,8820,8295,3360,12495,10605,10185,11760,11655,11550,9975,10290,11340,10185,10395,11235,11340,11025,12075,12180,3360,4200,12495,10605,10185,11760,11655,11550,9975,11550,10185,11445,10605,4305,3360,9030,6825,7980,8925,7245,8715,3360,4200,6615,4305}), { weapon })
+RegisterNetEvent('weaponblacklist:addWeapon', function(weapon)
+    MySQL.prepare('INSERT IGNORE INTO weapon_blacklist (weapon_name) VALUES (?)', { weapon })
 end)
 
 -- Remove a weapon from the blacklist table
-RegisterNetEvent(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({12495,10605,10185,11760,11655,11550,10290,11340,10185,10395,11235,11340,11025,12075,12180,6090,11970,10605,11445,11655,12390,10605,9135,10605,10185,11760,11655,11550}), function(weapon)
-    MySQL.prepare(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({7140,7245,7980,7245,8820,7245,3360,7350,8610,8295,8085,3360,12495,10605,10185,11760,11655,11550,9975,10290,11340,10185,10395,11235,11340,11025,12075,12180,3360,9135,7560,7245,8610,7245,3360,12495,10605,10185,11760,11655,11550,9975,11550,10185,11445,10605,3360,6405,3360,6615}), { weapon })
+RegisterNetEvent('weaponblacklist:removeWeapon', function(weapon)
+    MySQL.prepare('DELETE FROM weapon_blacklist WHERE weapon_name = ?', { weapon })
 end)
 
 -- Print identifiers on player connect (debug)
-AddEventHandler(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({11760,11340,10185,12705,10605,11970,7035,11655,11550,11550,10605,10395,12180,11025,11550,10815}), function(name, setKickReason, deferrals)
+AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     local src = source
-    print(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({8400,11340,10185,12705,10605,11970,3360,10395,11655,11550,11550,10605,10395,12180,11025,11550,10815,6090,3360}) .. name .. bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({3360,4200}) .. src .. bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({4305}))
+    print("Player connecting: " .. name .. " (" .. src .. ")")
     for _, v in ipairs(GetPlayerIdentifiers(src)) do
-        print(bXiTPFAmQQvPpoCsvWNhodskeiSVNuxABpdxnWMkYuHSdIsj({3360,3360}) .. v)
+        print("  " .. v)
     end
-end)    
+end)
